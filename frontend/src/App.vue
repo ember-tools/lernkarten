@@ -4,6 +4,7 @@ import {useHead} from '@unhead/vue'
 import {computed} from 'vue'
 import {RouterLink, RouterView, useRoute} from 'vue-router'
 import {t} from './i18n'
+import {HAZMAT_PAGES} from './router/hazmat-pages'
 
 const route = useRoute()
 
@@ -26,6 +27,9 @@ useHead({
       <template #nav>
         <RouterLink to="/" class="nav-link">{{ t('nav.landing') }}</RouterLink>
         <RouterLink to="/zeichen" class="nav-link">{{ t('nav.signs') }}</RouterLink>
+        <RouterLink to="/gefahrnummern" class="nav-link" :class="{'router-link-exact-active': HAZMAT_PAGES.some(page => page.to === route.path)}">
+          {{ t('nav.hazmat') }}
+        </RouterLink>
         <RouterLink to="/lernstand" class="nav-link">{{ t('nav.progress') }}</RouterLink>
         <RouterLink to="/hilfe" class="nav-link">{{ t('nav.help') }}</RouterLink>
       </template>
