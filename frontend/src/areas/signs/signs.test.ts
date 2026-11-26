@@ -5,7 +5,7 @@ import {AREAS, DECKS, findDeck} from '../index'
 import {SIGN_ITEMS, formName, organisationName, sizeName, supplementName} from './catalog'
 import {SIGN_CHAPTERS} from './chapters'
 import {composable, differences, kitOf} from './compose'
-import {COMMON_VEHICLES} from './decks'
+import {COMMON_VEHICLES} from './tags'
 import {READING_ITEMS} from './reading'
 
 describe('sign area', () => {

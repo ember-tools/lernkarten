@@ -8,15 +8,12 @@ import {SIGN_ITEMS, inSections, type SignItem} from './catalog'
 import {exercisesFor, type SignExercise} from './exercises'
 import {NOTE_ITEMS} from './notes'
 import {READING_ITEMS} from './reading'
+import {COMMON_VEHICLES} from './tags'
 
 /** The cards of some signs in those of the given exercises each sign can be asked in. */
 function cardsOf(items: readonly SignItem[], exercises: readonly SignExercise[]): Card[] {
     return items.flatMap(item => exercisesFor(item).filter(exercise => exercises.includes(exercise)).map(exercise => card('signs', item.id, exercise)))
 }
-
-/** The vehicles every member should know (annex C.2): KdoW, ELW, (H)LF, TLF, DLAK, RW and MTF. */
-export const COMMON_VEHICLES = ['C.2.1', 'C.2.2', 'C.2.3', 'C.2.8', 'C.2.9', 'C.2.10', 'C.2.11', 'C.2.12', 'C.2.13', 'C.2.14', 'C.2.15',
-    'C.2.16', 'C.2.18', 'C.2.23'] as const
 
 const commonVehicles = SIGN_ITEMS.filter(item => (COMMON_VEHICLES as readonly string[]).includes(item.id))
 
