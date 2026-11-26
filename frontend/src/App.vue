@@ -25,6 +25,7 @@ useHead({
     <AppHeader :name="t('app.name')" :subtitle="t('app.subtitle')" home="/" logo="/favicon.svg">
       <template #nav>
         <RouterLink to="/" class="nav-link">{{ t('nav.landing') }}</RouterLink>
+        <RouterLink to="/zeichen" class="nav-link">{{ t('nav.signs') }}</RouterLink>
         <RouterLink to="/lernstand" class="nav-link">{{ t('nav.progress') }}</RouterLink>
         <RouterLink to="/hilfe" class="nav-link">{{ t('nav.help') }}</RouterLink>
       </template>

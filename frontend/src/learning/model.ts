@@ -4,7 +4,7 @@
  * cards for an audience and a level. Cards are generated from items, never written by hand.
  */
 
-import type {SvgElement} from '@emberbox/ui'
+import type {SvgElement, TacticalSignSpec} from '@emberbox/ui'
 
 /** The areas of the tool. */
 export type AreaId = 'signs' | 'hazmat'
@@ -46,11 +46,13 @@ export interface Choice {
 
 /**
  * A question ready to show. A choice question has one right choice among several; a flashcard
- * shows its back on demand and the learner says whether they knew it.
+ * shows its back on demand and the learner says whether they knew it; a compose question asks for
+ * a tactical sign to be put together from its building blocks and checks the blocks, not the picture.
  */
 export type Question =
     | {form: 'choice', cardId: string, prompt: string, visual?: SvgElement, choices: readonly Choice[], answer: number, explanation: string}
     | {form: 'flashcard', cardId: string, prompt: string, visual?: SvgElement, back: string, backVisual?: SvgElement, explanation?: string}
+    | {form: 'compose', cardId: string, prompt: string, target: TacticalSignSpec, explanation: string}
 
 /** An area: what it is called, what can be learnt in it and how it asks its cards. */
 export interface Area {

@@ -2,11 +2,13 @@
 import {computed, ref} from 'vue'
 import {t} from '../../i18n'
 import type {Question} from '../../learning/model'
+import ComposeQuestion from './ComposeQuestion.vue'
 import SignBackdrop from './SignBackdrop.vue'
 
 /**
  * One question: a choice question marks the picked and the right choice and explains, a flashcard
- * turns over and asks whether it was known. `answered` fires once the learner moves on.
+ * turns over and asks whether it was known, a compose question opens the construction kit.
+ * `answered` fires once the learner moves on.
  */
 const props = defineProps<{question: Question}>()
 const emit = defineEmits<{answered: [right: boolean]}>()
@@ -29,7 +31,7 @@ function tone(index: number): 'success' | 'error' | 'neutral' {
   <UCard>
     <div class="flex flex-col gap-4">
       <h2 class="headline m-0 text-2xl">{{ question.prompt }}</h2>
-      <SignBackdrop v-if="question.visual" :drawing="question.visual" :width="200" class="self-start"/>
+      <SignBackdrop v-if="question.form !== 'compose' && question.visual" :drawing="question.visual" :width="200" class="self-start"/>
 
       <template v-if="question.form === 'choice'">
         <div class="grid gap-2" :class="pictures ? 'grid-cols-2 md:grid-cols-4' : 'md:grid-cols-2'">
@@ -49,6 +51,9 @@ function tone(index: number): 'success' | 'error' | 'neutral' {
           <UButton class="self-end" icon="i-lucide-arrow-right" trailing :label="t('question.next')" @click="emit('answered', right)"/>
         </template>
       </template>
+
+      <ComposeQuestion v-else-if="question.form === 'compose'" :target="question.target"
+                       :explanation="question.explanation" @answered="right => emit('answered', right)"/>
 
       <template v-else>
         <UButton v-if="!turned" class="self-start" icon="i-lucide-rotate-cw" :label="t('question.turn')" @click="turned = true"/>

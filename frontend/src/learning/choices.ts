@@ -1,3 +1,4 @@
+import type {SvgElement} from '@emberbox/ui'
 import type {Choice, Question} from './model'
 import {shuffled} from './random'
 
@@ -5,7 +6,7 @@ import {shuffled} from './random'
 export interface ChoiceDraft {
     cardId: string
     prompt: string
-    visual?: Question['visual']
+    visual?: SvgElement
     correct: Choice
     distractors: readonly Choice[]
     explanation: string

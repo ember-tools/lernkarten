@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import {tacticalSignTree, type SvgElement} from '@emberbox/ui'
 import {computed, onMounted, ref} from 'vue'
 import {useRoute} from 'vue-router'
 import QuestionCard from '../components/learning/QuestionCard.vue'
 import SignBackdrop from '../components/learning/SignBackdrop.vue'
 import {useLearningState} from '../composables/useLearningState'
 import {t} from '../i18n'
-import {AREAS, findDeck} from '../learning/content'
+import {AREAS, findDeck} from '../areas'
 import type {Question} from '../learning/model'
 import {quizCards} from '../learning/session'
 
@@ -37,8 +38,9 @@ function start(length: 10 | 20) {
 }
 
 /** The right answer of a question as shown in the result: its writing and its drawing, either may be missing. */
-function solution(question: Question): {text?: string, drawing?: Question['visual']} {
+function solution(question: Question): {text?: string, drawing?: SvgElement} {
   if (question.form === 'flashcard') return {text: question.back, drawing: question.backVisual}
+  if (question.form === 'compose') return {drawing: tacticalSignTree(question.target)}
   return question.choices[question.answer] ?? {}
 }
 </script>
@@ -72,7 +74,7 @@ function solution(question: Question): {text?: string, drawing?: Question['visua
           <ul v-if="misses.length" class="m-0 flex list-none flex-col gap-3 p-0">
             <li v-for="question in misses" :key="question.cardId" class="flex flex-col gap-1 border-l-2 border-error pl-3">
               <span class="font-semibold">{{ question.prompt }}</span>
-              <SignBackdrop v-if="question.visual" :drawing="question.visual" :width="96" class="self-start"/>
+              <SignBackdrop v-if="question.form !== 'compose' && question.visual" :drawing="question.visual" :width="96" class="self-start"/>
               <span>{{ solution(question).text ? t('quiz.solution', {answer: solution(question).text}) : t('quiz.solutionDrawing') }}</span>
               <SignBackdrop v-if="solution(question).drawing" :drawing="solution(question).drawing!" :width="96" class="self-start"/>
               <span v-if="question.explanation" class="text-sm text-muted">{{ question.explanation }}</span>

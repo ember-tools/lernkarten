@@ -7,7 +7,8 @@
     "moduleResolution": "bundler",
     "types": ["node"],
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   },
-  "include": ["vite.config.ts", "vitest.config.ts", "src/router/public-paths.ts"]
+  "include": ["vite.config.ts", "vitest.config.ts", "src/router/public-paths.ts", "src/areas/signs/chapters.ts"]
 }
