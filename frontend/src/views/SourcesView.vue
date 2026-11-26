@@ -9,7 +9,7 @@ import {germanDay} from '../learning/leitner'
 
 usePage({
   title: 'Quellen – Lernkarten',
-  description: 'Woher die Inhalte der Lernkarten stammen: Empfehlungen des BBK zu taktischen Zeichen, ADR 2025, FwDV 500 und die Liste der UN-Nummern.',
+  description: 'Woher die Inhalte der Lernkarten stammen: Empfehlungen des BBK zu taktischen Zeichen, FwDV 3, ADR 2025, FwDV 500 und die Liste der UN-Nummern.',
   path: '/quellen',
 })
 
@@ -18,6 +18,7 @@ const SOURCES = [
   {key: 'bbk', title: CATALOG_SOURCE, url: 'https://lv-saarland.drk.de/fileadmin/user_upload/Taktische_Zeichen_im_Bev%C3%B6lkerungsschutz_Druck_A5.pdf'},
   {key: 'notes', title: 'BBK: Begleitende Hinweise zur überarbeiteten Auflage der Empfehlungen für Taktische Zeichen, 12.02.2024', url: 'https://lv-saarland.drk.de/fileadmin/user_upload/Begleitende_Hinweise_zur_%C3%9Cberarbeitung.pdf'},
   {key: 'skk', title: 'Ständige Konferenz für Katastrophenvorsorge und Katastrophenschutz (SKK): Empfehlungen für Taktische Zeichen im Bevölkerungsschutz, 2010, korrigierte 2. Auflage 2012', url: 'https://hlfs.hessen.de/sites/hlfs.hessen.de/files/2022-09/TaktischeZeichen_SKK_0.pdf'},
+  {key: 'fwdv3', title: 'Feuerwehr-Dienstvorschrift 3 „Einheiten im Lösch- und Hilfeleistungseinsatz“, Stand Februar 2008', url: 'https://www.nlbk.niedersachsen.de/download/192510'},
   {key: 'adrNumbers', title: HAZARD_SOURCE.text, url: HAZARD_SOURCE.url},
   {key: 'adrLabels', title: 'ADR 2025, Kapitel 5.2 (Gefahrzettel, Kennzeichen für umweltgefährdende Stoffe)', url: 'https://www.gefahrgutshop.de/fileadmin/pdfs/ADR_2025/Gefahrgutshop_ADR_2025_Kapitel_5-2_Kennzeichnung-und-Bezettelung-Versandstuecke.pdf'},
   {key: 'fwdv', title: 'Feuerwehr-Dienstvorschrift 500 „Einheiten im ABC-Einsatz“, Stand Januar 2022', url: 'https://www.nlbk.niedersachsen.de/download/192517'},

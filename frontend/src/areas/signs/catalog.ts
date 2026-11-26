@@ -11,7 +11,7 @@ import type {Item} from '../../learning/model'
 /** A sign of the catalogue as a learning item. */
 export interface SignItem extends Item {
     entry: CatalogEntry
-    /** The chapter or annex the sign belongs to: "1" to "6", "C" or "D". */
+    /** The chapter or annex the sign belongs to: "1" to "6", "C" or "D", or "G" for the group of a fire service. */
     chapter: string
     /** The section within it, such as "4.3" or "C.1", for distractors from the same neighbourhood. */
     section: string
@@ -23,8 +23,11 @@ function sectionOf(number: string): string {
     return parts.length > 2 ? parts.slice(0, -1).join('.') : parts[0]!
 }
 
-/** Every sign of the recommendations in the catalogue, the library's own marks left out. */
-export const SIGN_ITEMS: readonly SignItem[] = TACTICAL_SIGN_CATALOG.filter(entry => entry.recommended).map(entry => ({
+/**
+ * Every sign of the recommendations in the catalogue, then the group of a fire service the library
+ * builds after their system; the water supply marks are left out.
+ */
+export const SIGN_ITEMS: readonly SignItem[] = TACTICAL_SIGN_CATALOG.filter(entry => entry.recommended || entry.number.startsWith('G.')).map(entry => ({
     id: entry.id,
     area: 'signs',
     name: entry.name,
@@ -32,6 +35,11 @@ export const SIGN_ITEMS: readonly SignItem[] = TACTICAL_SIGN_CATALOG.filter(entr
     chapter: entry.number.split('.')[0]!,
     section: sectionOf(entry.number),
 }))
+
+/** The signs of a chapter or annex, such as "4" or "G". */
+export function chapterItems(chapter: string): SignItem[] {
+    return SIGN_ITEMS.filter(item => item.chapter === chapter)
+}
 
 /** The item of a catalogue id. */
 export function signItem(id: string): SignItem | undefined {

@@ -1,16 +1,25 @@
 <script setup lang="ts">
 import {useConfirm} from '@emberbox/ui'
 import {computed, onMounted, ref} from 'vue'
+import SignChoice from '../components/SignChoice.vue'
 import {useLearningState} from '../composables/useLearningState'
+import {useSignFilter} from '../composables/useSignFilter'
 import {t} from '../i18n'
 import {DECKS} from '../areas'
+import {SIGN_DECK_ID, serviceDeck, signDeck} from '../areas/signs'
+import {CHOSEN_SERVICES} from '../areas/signs/filter'
 import {localDay} from '../learning/leitner'
 import type {Deck} from '../learning/model'
 import {exportProgress, importProgress} from '../learning/progress'
 import {deckStanding} from '../learning/session'
 
-/** The learner's standing per deck, starting a deck over, and moving the progress to another device as a file. */
+/**
+ * The learner's standing per deck, starting a deck over, and moving the progress to another device
+ * as a file. Signs stand for the learner's choice, with a line per chosen service; starting over
+ * clears the cards of that choice.
+ */
 const state = useLearningState()
+const signs = useSignFilter()
 const confirm = useConfirm()
 /** A short report after an import. */
 interface Notice {
@@ -21,11 +30,24 @@ interface Notice {
 const message = ref<Notice | null>(null)
 const fileInput = ref<HTMLInputElement | null>(null)
 
-onMounted(() => state.load())
+onMounted(() => {
+  state.load()
+  signs.load()
+})
+
+const decks = computed(() => [signDeck(signs.filter.value), ...DECKS])
 
 const standings = computed(() => {
   const today = localDay(new Date())
-  return new Map(DECKS.map(deck => [deck.id, deckStanding(deck, state.progress.value, today)]))
+  return new Map(decks.value.map(deck => [deck.id, deckStanding(deck, state.progress.value, today)]))
+})
+
+/** The standing of what each chosen service adds at the chosen stage, beyond the signs of every organisation. */
+const serviceStandings = computed(() => {
+  const today = localDay(new Date())
+  const {services, stage} = signs.filter.value
+  return CHOSEN_SERVICES.filter(service => services.includes(service))
+    .map(service => ({service, standing: deckStanding(serviceDeck(service, stage), state.progress.value, today)}))
 })
 
 async function reset(deck: Deck) {
@@ -67,13 +89,20 @@ async function upload(event: Event) {
     <UAlert v-if="message" :color="message.color" variant="soft" :title="message.text"/>
 
     <section class="flex flex-col gap-3">
-      <p v-if="!DECKS.length" class="m-0 text-muted">{{ t('progress.noDecks') }}</p>
-      <UCard v-for="deck in DECKS" :key="deck.id">
+      <UCard v-for="deck in decks" :key="deck.id">
         <div class="flex flex-col gap-3">
           <div class="flex flex-wrap items-baseline justify-between gap-2">
             <h2 class="headline m-0 text-xl">{{ deck.name }}</h2>
             <span class="text-sm text-muted">{{ t('progress.standing', {...standings.get(deck.id)}) }}</span>
           </div>
+          <template v-if="deck.id === SIGN_DECK_ID">
+            <SignChoice :filter="signs.filter.value" @choose="signs.choose"/>
+            <ul v-if="serviceStandings.length" class="m-0 flex list-none flex-col gap-1 p-0 text-sm text-muted">
+              <li v-for="row in serviceStandings" :key="row.service">
+                {{ t('progress.serviceStanding', {service: t(`filter.service.${row.service}`), ...row.standing}) }}
+              </li>
+            </ul>
+          </template>
           <div class="flex gap-1" :aria-label="t('progress.boxes')">
             <span v-for="(count, box) in standings.get(deck.id)?.boxes" :key="box" class="flex-1 rounded bg-elevated px-2 py-1 text-center text-sm">
               {{ t('progress.box', {box: box + 1, count}) }}

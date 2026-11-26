@@ -18,7 +18,7 @@ export interface ComposedSign {
 /** The blocks that can differ between two signs. */
 export type Block = 'form' | 'organisation' | 'size' | 'supplements' | 'abilities'
 
-const KIT_KEYS = new Set<keyof TacticalSignSpec>(['form', 'organisation', 'size', 'supplements', 'abilities', 'designation'])
+const KIT_KEYS = new Set<keyof TacticalSignSpec>(['form', 'organisation', 'size', 'supplements', 'abilities', 'designation', 'text'])
 
 /** Whether a sign can be put together in the kit: it uses only its blocks and at least one beyond form and colour. */
 export function composable(spec: TacticalSignSpec): boolean {
@@ -45,7 +45,7 @@ export function differences(target: TacticalSignSpec, given: ComposedSign): Bloc
     return blocks
 }
 
-/** The sign the kit draws: the blocks plus the designation of the right sign, which the kit does not ask for. */
+/** The sign the kit draws: the blocks plus the designation and writing of the right sign, which the kit does not ask for. */
 export function drawn(given: ComposedSign, target: TacticalSignSpec): TacticalSignSpec {
-    return {...given, designation: target.designation}
+    return {...given, designation: target.designation, text: target.text}
 }
