@@ -41,3 +41,9 @@ export function review(previous: CardProgress | undefined, right: boolean, today
 export function isDue(progress: CardProgress | undefined, today: string): boolean {
     return progress === undefined || progress.due <= today
 }
+
+/** A calendar day `YYYY-MM-DD` as Germans write it, `DD.MM.YYYY`, without passing through a time zone. */
+export function germanDay(day: string): string {
+    const [year, month, date] = day.split('-')
+    return `${date}.${month}.${year}`
+}

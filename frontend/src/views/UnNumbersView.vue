@@ -5,8 +5,10 @@ import META from '../data/hazmat/meta.json'
 import {loadUnNumbers, plateHazard, type UnEntry} from '../areas/hazmat/data'
 import HazmatLinks from '../components/HazmatLinks.vue'
 import NotForOperations from '../components/NotForOperations.vue'
+import NoteText from '../components/NoteText.vue'
 import SignBackdrop from '../components/learning/SignBackdrop.vue'
 import {t} from '../i18n'
+import {germanDay} from '../learning/leitner'
 
 usePage({
   title: 'UN-Nummern – Lernkarten',
@@ -53,7 +55,7 @@ const matches = computed(() => found.value.slice(0, LIMIT))
     </UFormField>
     <UAlert v-if="failed" color="error" variant="soft" :title="t('un.failed')"/>
     <p v-if="query.trim() && !matches.length && entries.length" class="m-0 text-muted">{{ t('un.none') }}</p>
-    <p v-if="found.length > LIMIT" class="m-0 text-sm text-muted">{{ t('un.limited', {shown: LIMIT, total: found.length}) }}</p>
+    <NoteText v-if="found.length > LIMIT">{{ t('un.limited', {shown: LIMIT, total: found.length}) }}</NoteText>
     <ul class="m-0 flex list-none flex-col gap-2 p-0">
       <li v-for="(entry, index) in matches" :key="`${index}-${entry.un}`" class="flex items-center gap-3 rounded-(--ui-radius) border border-default p-3">
         <SignBackdrop v-if="plateHazard(entry)" :drawing="warningPanelTree({hazardNumber: plateHazard(entry)!, unNumber: entry.un})" :width="72"/>
@@ -66,12 +68,12 @@ const matches = computed(() => found.value.slice(0, LIMIT))
         </span>
       </li>
     </ul>
-    <p class="m-0 text-sm text-muted">
-      {{ t('un.source', {date: META.date}) }}
+    <NoteText>
+      {{ t('un.source', {date: germanDay(META.date)}) }}
       <a :href="META.source" rel="noopener" target="_blank">{{ t('un.chemie') }}</a> ·
       <a :href="META.origin" rel="noopener" target="_blank">{{ t('un.wikipedia') }}</a> ·
       <a :href="META.authors" rel="noopener" target="_blank">{{ t('un.authors') }}</a> ·
       <a href="https://www.gnu.org/licenses/fdl.html" rel="noopener" target="_blank">{{ t('un.licence') }}</a>
-    </p>
+    </NoteText>
   </div>
 </template>

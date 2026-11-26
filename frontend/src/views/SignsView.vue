@@ -2,6 +2,7 @@
 import {CATALOG_SOURCE, usePage} from '@emberbox/ui'
 import {SIGN_ITEMS} from '../areas/signs/catalog'
 import {SIGN_CHAPTERS} from '../areas/signs/chapters'
+import NoteText from '../components/NoteText.vue'
 import {t} from '../i18n'
 
 usePage({
@@ -32,6 +33,6 @@ const count = (chapter: string) => SIGN_ITEMS.filter(item => item.chapter === ch
         </div>
       </UCard>
     </div>
-    <p class="m-0 text-sm text-muted">{{ t('reference.source', {source: CATALOG_SOURCE}) }}</p>
+    <NoteText>{{ t('reference.source', {source: CATALOG_SOURCE}) }} <RouterLink to="/quellen">{{ t('nav.sources') }}</RouterLink></NoteText>
   </div>
 </template>

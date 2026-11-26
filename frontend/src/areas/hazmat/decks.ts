@@ -64,7 +64,7 @@ export const HAZMAT_DECKS: readonly Deck[] = [
         ],
     },
     {
-        id: 'gefahrgut-alle', area: 'hazmat', level: 'lead', name: 'Gefahrgut – alle',
+        id: 'gefahrgut-alle', area: 'hazmat', level: 'lead', everything: true, name: 'Gefahrgut – alle',
         description: 'Alle Gefahrgut-Aufgaben.',
         cards: [
             ...cards(ids(NUMBER_ITEMS), 'number-meaning'),

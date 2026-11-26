@@ -2,6 +2,7 @@
 import {DANGER_LABELS, DANGER_LABEL_PATTERNS, dangerLabelTree, environmentMarkTree, usePage, warningPanelTree} from '@emberbox/ui'
 import HazmatLinks from '../components/HazmatLinks.vue'
 import NotForOperations from '../components/NotForOperations.vue'
+import NoteText from '../components/NoteText.vue'
 import SignBackdrop from '../components/learning/SignBackdrop.vue'
 import {t} from '../i18n'
 
@@ -39,6 +40,6 @@ usePage({
         <span class="text-sm">{{ t('labels.plate') }}</span>
       </li>
     </ul>
-    <p class="m-0 text-sm text-muted">{{ t('labels.source') }}</p>
+    <NoteText>{{ t('labels.source') }}</NoteText>
   </div>
 </template>

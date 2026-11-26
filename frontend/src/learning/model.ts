@@ -35,6 +35,8 @@ export interface Deck {
     name: string
     description: string
     level: Level
+    /** Whether the deck holds every card of its area, for all levels. */
+    everything?: boolean
     cards: readonly Card[]
 }
 

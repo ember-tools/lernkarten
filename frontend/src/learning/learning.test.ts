@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest'
 import {choiceQuestion, distractorItems} from './choices'
-import {INTERVALS, addDays, isDue, localDay, review, type CardProgress} from './leitner'
+import {INTERVALS, addDays, germanDay, isDue, localDay, review, type CardProgress} from './leitner'
 import {card, type Deck} from './model'
 import {
     DEFAULT_SETTINGS, exportProgress, importProgress, parseProgress, parseSettings, serializeProgress, serializeSettings, withoutCards,
@@ -40,6 +40,7 @@ describe('Leitner boxes', () => {
         expect(addDays('2027-03-27', 1)).toBe('2027-03-28')
         expect(addDays('2027-10-30', 1)).toBe('2027-10-31')
         expect(localDay(new Date(2027, 2, 28, 23, 30))).toBe('2027-03-28')
+        expect(germanDay('2026-11-26')).toBe('26.11.2026')
     })
 
     it('treats an unseen card as due', () => {

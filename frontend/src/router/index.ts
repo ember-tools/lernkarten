@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
     {path: '/gefahrnummern', name: 'HazardNumbers', component: () => import('../views/HazardNumbersView.vue'), meta: {public: true}},
     {path: '/gefahrzettel', name: 'DangerLabels', component: () => import('../views/DangerLabelsView.vue'), meta: {public: true}},
     {path: '/un-nummern', name: 'UnNumbers', component: () => import('../views/UnNumbersView.vue'), meta: {public: true}},
+    {path: '/quellen', name: 'Sources', component: () => import('../views/SourcesView.vue'), meta: {public: true}},
     {path: '/lernen/:deck', name: 'Learn', component: () => import('../views/LearnView.vue'), meta: {titleKey: 'routes.learn'}},
     {path: '/quiz/:deck', name: 'Quiz', component: () => import('../views/QuizView.vue'), meta: {titleKey: 'routes.quiz'}},
     {path: '/lernstand', name: 'Progress', component: () => import('../views/ProgressView.vue'), meta: {titleKey: 'routes.progress'}},

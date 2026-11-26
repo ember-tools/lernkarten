@@ -85,7 +85,7 @@ function plateFits(substance: CommonSubstance, cardId: string, random: () => num
     return {
         form: 'choice', cardId, prompt: t('hazmat.prompt.plateFits', {name: substance.name}), visual: plateWithLabels(shown),
         choices: [yes, no], answer: fits ? 0 : 1,
-        explanation: t('hazmat.plateRight', {plate: `${substance.hazard}/${substance.un}`, name: substance.name}),
+        explanation: `${t('hazmat.plateRight', {plate: `${substance.hazard}/${substance.un}`, name: substance.name})} ${explainHazardNumber(substance.hazard)}`,
     }
 }
 

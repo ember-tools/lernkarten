@@ -2,6 +2,7 @@
 import {tacticalSignTree, type SvgElement} from '@emberbox/ui'
 import {computed, onMounted, ref} from 'vue'
 import {useRoute} from 'vue-router'
+import NoteText from '../components/NoteText.vue'
 import QuestionCard from '../components/learning/QuestionCard.vue'
 import SignBackdrop from '../components/learning/SignBackdrop.vue'
 import {useLearningState} from '../composables/useLearningState'
@@ -51,9 +52,9 @@ function solution(question: Question): {text?: string, drawing?: SvgElement} {
       <header class="flex flex-col gap-1">
         <p class="eyebrow m-0">{{ t('quiz.eyebrow') }}</p>
         <h1 class="headline m-0 text-3xl">{{ deck.name }}</h1>
-        <p v-if="running && current" class="m-0 text-sm text-muted">
+        <NoteText v-if="running && current">
           {{ t('quiz.position', {number: results.length + 1, total: questions.length}) }}
-        </p>
+        </NoteText>
       </header>
 
       <UCard v-if="!running">

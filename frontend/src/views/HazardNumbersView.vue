@@ -3,6 +3,7 @@ import {usePage} from '@emberbox/ui'
 import {HAZARD_DIGITS, HAZARD_NUMBERS, HAZARD_SOURCE, SPECIAL_HAZARD_NUMBERS, WATER_NOTE} from '../areas/hazmat/data'
 import HazmatLinks from '../components/HazmatLinks.vue'
 import NotForOperations from '../components/NotForOperations.vue'
+import NoteText from '../components/NoteText.vue'
 import {t} from '../i18n'
 
 usePage({
@@ -47,9 +48,9 @@ usePage({
         </template>
       </dl>
     </section>
-    <p class="m-0 text-sm text-muted">
+    <NoteText>
       {{ t('reference.source', {source: HAZARD_SOURCE.text}) }}
       <a :href="HAZARD_SOURCE.url" rel="noopener" target="_blank">{{ t('reference.sourceLink') }}</a>
-    </p>
+    </NoteText>
   </div>
 </template>

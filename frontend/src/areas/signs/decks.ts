@@ -53,7 +53,7 @@ export const SIGN_DECKS: readonly Deck[] = [
         ],
     },
     {
-        id: 'zeichen-alle', area: 'signs', level: 'lead', name: 'Zeichen – alle',
+        id: 'zeichen-alle', area: 'signs', level: 'lead', everything: true, name: 'Zeichen – alle',
         description: 'Alle Zeichen der Empfehlungen in allen Aufgaben.',
         cards: [
             ...cardsOf(SIGN_ITEMS, ['meaning', 'picture', 'size', 'organisation', 'ability', 'compose']),
