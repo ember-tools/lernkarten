@@ -25,12 +25,13 @@ useHead({
     <AppHeader :name="t('app.name')" :subtitle="t('app.subtitle')" home="/" logo="/favicon.svg">
       <template #nav>
         <RouterLink to="/" class="nav-link">{{ t('nav.landing') }}</RouterLink>
+        <RouterLink to="/lernstand" class="nav-link">{{ t('nav.progress') }}</RouterLink>
         <RouterLink to="/hilfe" class="nav-link">{{ t('nav.help') }}</RouterLink>
       </template>
     </AppHeader>
 
     <main class="mx-auto w-full max-w-6xl grow px-4 py-6 md:px-6">
-      <RouterView/>
+      <RouterView :key="route.path"/>
     </main>
 
     <AppFooter tool="Lernkarten" source="https://github.com/ember-tools/lernkarten" license="AGPL-3.0" help="/hilfe"/>

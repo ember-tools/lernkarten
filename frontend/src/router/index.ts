@@ -4,6 +4,9 @@ import {createRouter, type RouteRecordRaw, type RouterHistory} from 'vue-router'
 export const routes: RouteRecordRaw[] = [
     {path: '/', name: 'Landing', component: () => import('../views/LandingView.vue'), meta: {public: true}},
     {path: '/hilfe', name: 'Help', component: () => import('../views/HelpView.vue'), meta: {public: true}},
+    {path: '/lernen/:deck', name: 'Learn', component: () => import('../views/LearnView.vue'), meta: {titleKey: 'routes.learn'}},
+    {path: '/quiz/:deck', name: 'Quiz', component: () => import('../views/QuizView.vue'), meta: {titleKey: 'routes.quiz'}},
+    {path: '/lernstand', name: 'Progress', component: () => import('../views/ProgressView.vue'), meta: {titleKey: 'routes.progress'}},
     {path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/NotFoundView.vue'),
         meta: {titleKey: 'routes.notFound'}},
 ]
