@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import {tacticalSignTree, type SvgElement} from '@emberbox/ui'
 import {computed, onMounted, ref} from 'vue'
-import {useRoute} from 'vue-router'
 import NoteText from '../components/NoteText.vue'
+import SignChoice from '../components/SignChoice.vue'
 import QuestionCard from '../components/learning/QuestionCard.vue'
 import SignBackdrop from '../components/learning/SignBackdrop.vue'
+import {useDeck} from '../composables/useDeck'
 import {useLearningState} from '../composables/useLearningState'
 import {t} from '../i18n'
-import {AREAS, findDeck} from '../areas'
+import {AREAS} from '../areas'
 import type {Question} from '../learning/model'
 import {quizCards} from '../learning/session'
 
 /** A quiz over a deck: a fixed number of questions, then the result with the explanations of the misses. */
-const route = useRoute()
 const state = useLearningState()
-const deck = computed(() => findDeck(String(route.params.deck)))
+const {deck, signs, filter, choose, load} = useDeck()
 
 const questions = ref<Question[]>([])
 const results = ref<boolean[]>([])
@@ -25,7 +25,10 @@ const done = computed(() => running.value && current.value === undefined)
 const score = computed(() => results.value.filter(Boolean).length)
 const misses = computed(() => questions.value.filter((_, index) => results.value[index] === false))
 
-onMounted(() => state.load())
+onMounted(() => {
+  state.load()
+  load()
+})
 
 function start(length: 10 | 20) {
   if (!deck.value) return
@@ -60,6 +63,7 @@ function solution(question: Question): {text?: string, drawing?: SvgElement} {
       <UCard v-if="!running">
         <div class="flex flex-col gap-3">
           <p class="m-0">{{ t('quiz.intro') }}</p>
+          <SignChoice v-if="signs" :filter="filter" @choose="choose"/>
           <div class="flex flex-wrap gap-2">
             <UButton v-for="length in [10, 20] as const" :key="length" :label="t('quiz.start', {count: length})"
                      :variant="state.settings.value.quizLength === length ? 'solid' : 'outline'" @click="start(length)"/>

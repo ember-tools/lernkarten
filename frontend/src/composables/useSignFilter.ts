@@ -36,9 +36,10 @@ function queryWith(query: LocationQuery, next: SignFilter): LocationQuery {
  * The learner's choice of services and stage for the signs, shared by every page. Until `load()`,
  * which pages call in `onMounted`, it leaves nothing out, so a prerendered page shows every sign.
  * `resolveFilter` decides what loading takes; choosing writes the choice to the browser and the
- * address, so the address can be passed on and the next visit starts with it.
+ * address, so the address can be passed on and the next visit starts with it. A page whose links
+ * carry the choice themselves, such as the start page, keeps it out of its own address.
  */
-export function useSignFilter() {
+export function useSignFilter(options: {address: boolean} = {address: true}) {
     const route = useRoute()
     const router = useRouter()
 
@@ -48,14 +49,14 @@ export function useSignFilter() {
         filter.value = resolved.filter
         chosen.value = true
         if (resolved.store) writeStored(resolved.filter)
-        if (resolved.address) void router.replace({query: {...route.query, ...resolved.address}})
+        if (resolved.address && options.address) void router.replace({query: {...route.query, ...resolved.address}})
     }
 
     function choose(next: SignFilter) {
         filter.value = next
         chosen.value = true
         writeStored(next)
-        void router.replace({query: queryWith(route.query, next)})
+        if (options.address) void router.replace({query: queryWith(route.query, next)})
     }
 
     return {filter: readonly(filter), load, choose}

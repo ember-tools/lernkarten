@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import {useId} from 'vue'
-import {CHOSEN_SERVICES} from '../areas/signs/filter'
+import {computed, useId, type ComputedRef} from 'vue'
+import {SIGN_ITEMS, type SignItem} from '../areas/signs/catalog'
+import {CHOSEN_SERVICES, filterItems} from '../areas/signs/filter'
 import {STAGES, type Service, type SignFilter, type Stage} from '../areas/signs/tags'
 import {t} from '../i18n'
 
 /**
  * The choice of services and stage above a list of signs: each service toggles on its own, the
- * stage is one of three and includes those before it. It says how many signs the choice keeps.
+ * stage is one of three and includes those before it. It says how many of the given signs, by
+ * default all of them, the choice keeps.
  */
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   filter: SignFilter
-  shown: number
-  total: number
-}>()
+  items?: readonly SignItem[]
+}>(), {items: () => SIGN_ITEMS})
+
+const shown: ComputedRef<number> = computed(() => filterItems(props.items, props.filter).length)
 
 const emit = defineEmits<{choose: [filter: SignFilter]}>()
 
@@ -53,6 +56,6 @@ function setStage(stage: Stage) {
                  :label="t(`filter.stageName.${stage}`)" @click="setStage(stage)"/>
       </UFieldGroup>
     </div>
-    <p class="m-0 text-sm text-muted" aria-live="polite">{{ t('filter.count', {shown, total}) }} {{ t('filter.always') }}</p>
+    <p class="m-0 text-sm text-muted" aria-live="polite">{{ t('filter.count', {shown, total: items.length}) }} {{ t('filter.always') }}</p>
   </section>
 </template>

@@ -1,61 +1,75 @@
 /**
- * The decks of the sign area, by audience: the basics for the youth fire brigade, what a crew
- * needs, what leaders need, and everything.
+ * The deck of the sign area, built from the learner's choice of services and stage, and the fixed
+ * decks it replaced, kept as choices so their old addresses still lead somewhere.
  */
 
-import {card, type Card, type Deck} from '../../learning/model'
-import {SIGN_ITEMS, inSections, type SignItem} from './catalog'
+import {t} from '../../i18n'
+import {card, type Card, type Deck, type Level} from '../../learning/model'
+import {SIGN_ITEMS, type SignItem} from './catalog'
 import {exercisesFor, type SignExercise} from './exercises'
+import {CHOSEN_SERVICES, EVERYTHING, filterItems, isEverything} from './filter'
 import {NOTE_ITEMS} from './notes'
 import {READING_ITEMS} from './reading'
-import {COMMON_VEHICLES} from './tags'
+import {tagsOf, type Service, type SignFilter, type Stage} from './tags'
+
+/** The id and address of the sign deck. */
+export const SIGN_DECK_ID = 'zeichen'
+
+/** The level of the learning model each stage of training stands for. */
+const STAGE_LEVEL: Readonly<Record<Stage, Level>> = {youth: 'basic', crew: 'crew', lead: 'lead'}
+
+/**
+ * The exercises asked of a sign from each stage on: meaning and picture from the start, the building
+ * blocks of the example units for the crew, the organisation of a command sign for leaders.
+ */
+const STAGE_EXERCISES: Readonly<Record<Stage, readonly SignExercise[]>> = {
+    youth: ['meaning', 'picture'],
+    crew: ['meaning', 'picture', 'size', 'ability', 'compose'],
+    lead: ['meaning', 'picture', 'size', 'ability', 'compose', 'organisation'],
+}
+
+/** The fixed decks of earlier versions and the choice each one stands for now. */
+export const FORMER_SIGN_DECKS: Readonly<Record<string, SignFilter>> = {
+    'zeichen-grundlagen': {services: ['fire'], stage: 'youth'},
+    'zeichen-einsatzabteilung': {services: ['fire'], stage: 'crew'},
+    'zeichen-fuehrung': {services: ['fire', 'command'], stage: 'lead'},
+    'zeichen-alle': EVERYTHING,
+}
 
 /** The cards of some signs in those of the given exercises each sign can be asked in. */
 function cardsOf(items: readonly SignItem[], exercises: readonly SignExercise[]): Card[] {
     return items.flatMap(item => exercisesFor(item).filter(exercise => exercises.includes(exercise)).map(exercise => card('signs', item.id, exercise)))
 }
 
-const commonVehicles = SIGN_ITEMS.filter(item => (COMMON_VEHICLES as readonly string[]).includes(item.id))
+const ITEMS_BY_ID = new Map([...SIGN_ITEMS, ...READING_ITEMS, ...NOTE_ITEMS].map(item => [item.id, item]))
 
-const PICTURE_AND_MEANING: SignExercise[] = ['meaning', 'picture']
+/** The deck of one service at a stage, holding only what belongs to that service, not what every organisation shares. */
+export function serviceDeck(service: Service, stage: Stage): Deck {
+    const deck = signDeck({services: [service], stage})
+    const own = (itemId: string) => {
+        const item = ITEMS_BY_ID.get(itemId)
+        return item !== undefined && (tagsOf(item)?.services.includes(service) ?? false)
+    }
+    return {...deck, cards: deck.cards.filter(entry => own(entry.itemId))}
+}
 
-/** The decks of the sign area. */
-export const SIGN_DECKS: readonly Deck[] = [
-    {
-        id: 'zeichen-grundlagen', area: 'signs', level: 'basic', name: 'Zeichen – Grundlagen',
-        description: 'Grundformen, Farben der Organisationen, Größenordnungen und die häufigsten Feuerwehrfahrzeuge.',
+/** A short name of a choice, such as "Feuerwehr, THW · Einsatzabteilung". */
+export function filterName(filter: SignFilter): string {
+    if (isEverything(filter)) return t('signs.deck.everything')
+    const services = CHOSEN_SERVICES.filter(service => filter.services.includes(service)).map(service => t(`filter.service.${service}`))
+    return t('signs.deck.choice', {services: services.length ? services.join(', ') : t('signs.deck.common'), stage: t(`filter.stageName.${filter.stage}`)})
+}
+
+/** The sign deck of a choice: the signs it keeps in the exercises of its stage, with the worked examples and notes it keeps. */
+export function signDeck(filter: SignFilter): Deck {
+    return {
+        id: SIGN_DECK_ID, area: 'signs', level: STAGE_LEVEL[filter.stage], everything: isEverything(filter),
+        name: t('signs.deck.name', {choice: filterName(filter)}),
+        description: t('signs.deck.description'),
         cards: [
-            ...cardsOf(inSections('1', '2', '5.4', '5.5'), PICTURE_AND_MEANING),
-            ...cardsOf(commonVehicles, PICTURE_AND_MEANING),
-            card('signs', 'note-hazard', 'note'),
+            ...cardsOf(filterItems(SIGN_ITEMS, filter), STAGE_EXERCISES[filter.stage]),
+            ...filterItems(READING_ITEMS, filter).map(item => card('signs', item.id, 'reading')),
+            ...filterItems(NOTE_ITEMS, filter).map(item => card('signs', item.id, 'note')),
         ],
-    },
-    {
-        id: 'zeichen-einsatzabteilung', area: 'signs', level: 'crew', name: 'Zeichen – Einsatzabteilung',
-        description: 'Fähigkeiten von Brandschutz bis Betreuung, Ergänzungszeichen, Gefahren und Schäden, Feuerwehreinheiten und was sich seit 2010 geändert hat.',
-        cards: [
-            ...cardsOf(inSections('4.1', '4.2', '4.3', '4.5', '4.6', '4.7', '3'), PICTURE_AND_MEANING),
-            ...cardsOf(SIGN_ITEMS.filter(item => item.entry.number.startsWith('5.8')), PICTURE_AND_MEANING),
-            ...cardsOf(inSections('C.1'), [...PICTURE_AND_MEANING, 'size', 'ability', 'compose']),
-            ...NOTE_ITEMS.map(item => card('signs', item.id, 'note')),
-        ],
-    },
-    {
-        id: 'zeichen-fuehrung', area: 'signs', level: 'lead', name: 'Zeichen – Führung',
-        description: 'Führungsstellen und Führungskräfte, Verbände, Verwaltungsstufen, Bewegungen und das Lesen von Stärke, Zeit und Identifizierung.',
-        cards: [
-            ...cardsOf(inSections('D'), [...PICTURE_AND_MEANING, 'size', 'organisation', 'compose']),
-            ...cardsOf(inSections('5.5', '5.7', '5.2'), PICTURE_AND_MEANING),
-            ...READING_ITEMS.map(item => card('signs', item.id, 'reading')),
-        ],
-    },
-    {
-        id: 'zeichen-alle', area: 'signs', level: 'lead', everything: true, name: 'Zeichen – alle',
-        description: 'Alle Zeichen der Empfehlungen in allen Aufgaben.',
-        cards: [
-            ...cardsOf(SIGN_ITEMS, ['meaning', 'picture', 'size', 'organisation', 'ability', 'compose']),
-            ...READING_ITEMS.map(item => card('signs', item.id, 'reading')),
-            ...NOTE_ITEMS.map(item => card('signs', item.id, 'note')),
-        ],
-    },
-]
+    }
+}

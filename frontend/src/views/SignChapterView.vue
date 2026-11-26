@@ -40,7 +40,7 @@ usePage({
         <h1 class="headline m-0 text-4xl">{{ chapter.title }}</h1>
         <p class="m-0 text-lg text-muted">{{ chapter.intro }}</p>
       </header>
-      <SignFilterBar :filter="filter" :shown="kept.length" :total="all.length" @choose="choose"/>
+      <SignFilterBar :filter="filter" :items="all" @choose="choose"/>
       <SignList :items="items"/>
       <div v-if="kept.length < all.length" class="flex flex-wrap items-center gap-3">
         <span v-if="!showAll" class="text-sm text-muted">{{ kept.length ? t('filter.hidden', {count: all.length - kept.length}) : t('filter.none') }}</span>

@@ -1,17 +1,20 @@
 import {BASIC_FORMS, SIGN_ORGANISATIONS, SIGN_SIZES, SUPPLEMENTS} from '@emberbox/ui'
 import {describe, expect, it} from 'vitest'
 import {seededRandom} from '../../learning/random'
-import {AREAS, DECKS, findDeck} from '../index'
+import {AREAS, DECKS} from '../index'
 import {SIGN_ITEMS, formName, organisationName, sizeName, supplementName} from './catalog'
 import {SIGN_CHAPTERS} from './chapters'
 import {composable, differences, kitOf} from './compose'
 import {COMMON_VEHICLES} from './tags'
+import {FORMER_SIGN_DECKS, filterName, serviceDeck, signDeck} from './decks'
+import {EVERYTHING} from './filter'
 import {READING_ITEMS} from './reading'
 
 describe('sign area', () => {
     it('asks every card of every deck as a sound question', () => {
         const random = seededRandom(11)
-        for (const deck of DECKS) {
+        const signDecks = [EVERYTHING, ...Object.values(FORMER_SIGN_DECKS), {services: [], stage: 'youth'} as const].map(signDeck)
+        for (const deck of [...signDecks, ...DECKS]) {
             expect(deck.cards.length, deck.id).toBeGreaterThan(0)
             expect(new Set(deck.cards.map(card => card.id)).size, deck.id).toBe(deck.cards.length)
             for (const card of deck.cards) {
@@ -28,22 +31,45 @@ describe('sign area', () => {
         }
     })
 
-    it('offers the decks for every level, with the basics free of leader topics', () => {
-        expect(new Set(DECKS.map(deck => deck.level))).toEqual(new Set(['basic', 'crew', 'lead']))
-        const basics = findDeck('zeichen-grundlagen')!
+    it('keeps the basics of the fire service free of leader topics', () => {
+        const basics = signDeck({services: ['fire'], stage: 'youth'})
+        expect(basics.level).toBe('basic')
         expect(basics.cards.some(card => card.itemId.startsWith('D.') || card.exercise === 'reading')).toBe(false)
-        expect(basics.cards.some(card => card.itemId === '1.11')).toBe(true)
-        for (const id of COMMON_VEHICLES) expect(basics.cards.some(card => card.itemId === id), id).toBe(true)
-        expect(basics.cards.some(card => card.itemId === 'note-hazard')).toBe(true)
-        expect(basics.cards.some(card => card.exercise === 'organisation')).toBe(false)
+        for (const id of ['1.11', 'G.1', 'G.7', 'note-hazard', ...COMMON_VEHICLES]) expect(basics.cards.some(card => card.itemId === id), id).toBe(true)
+        expect(basics.cards.some(card => card.exercise !== 'meaning' && card.exercise !== 'picture' && card.exercise !== 'note')).toBe(false)
     })
 
-    it('asks building blocks only of the example signs of annexes C and D', () => {
+    it('asks building blocks only of the example signs of annexes C and D, the organisation only of leaders', () => {
         const blocks = new Set(['size', 'organisation', 'ability', 'compose'])
-        for (const deck of DECKS) {
-            for (const card of deck.cards.filter(entry => blocks.has(entry.exercise))) expect(card.itemId, card.id).toMatch(/^[CD]\./)
+        const everything = signDeck(EVERYTHING)
+        for (const card of everything.cards.filter(entry => blocks.has(entry.exercise))) expect(card.itemId, card.id).toMatch(/^[CD]\./)
+        expect(everything.cards.some(card => card.exercise === 'organisation')).toBe(true)
+        expect(signDeck({services: ['command'], stage: 'crew'}).cards.some(card => card.exercise === 'organisation')).toBe(false)
+    })
+
+    it('keeps the progress of the former decks, since cards are named by sign and exercise', () => {
+        const youth = signDeck(FORMER_SIGN_DECKS['zeichen-grundlagen']!)
+        for (const id of ['signs:meaning:1.11', 'signs:picture:5.4.3', 'signs:meaning:C.2.8', 'signs:note:note-hazard']) {
+            expect(youth.cards.some(card => card.id === id), id).toBe(true)
         }
-        expect(findDeck('zeichen-fuehrung')!.cards.some(card => card.exercise === 'organisation')).toBe(true)
+        const crew = signDeck(FORMER_SIGN_DECKS['zeichen-einsatzabteilung']!)
+        for (const id of ['signs:compose:C.1.2', 'signs:size:C.1.7', 'signs:picture:4.3.1', 'signs:meaning:5.8.8.1']) {
+            expect(crew.cards.some(card => card.id === id), id).toBe(true)
+        }
+        expect(signDeck(EVERYTHING).everything).toBe(true)
+    })
+
+    it('names a choice by its services and stage', () => {
+        expect(filterName(EVERYTHING)).toBe('alle Zeichen')
+        expect(filterName({services: ['thw', 'fire'], stage: 'crew'})).toBe('Feuerwehr, THW · Einsatzabteilung')
+        expect(filterName({services: [], stage: 'youth'})).toBe('für alle Organisationen · Jugendfeuerwehr')
+    })
+
+    it('counts for a service only what it adds to the signs of every organisation', () => {
+        const fire = serviceDeck('fire', 'youth')
+        expect(fire.cards.some(card => card.itemId === 'G.1')).toBe(true)
+        expect(fire.cards.some(card => card.itemId === '1.1')).toBe(false)
+        expect(fire.cards.length).toBeLessThan(signDeck({services: ['fire'], stage: 'youth'}).cards.length)
     })
 
     it('names every building block as the recommendations print it', () => {

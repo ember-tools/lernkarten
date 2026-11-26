@@ -29,7 +29,7 @@ export default {
         cards: '{count} Karten',
         lookUp: 'Nachschlagen',
         howTitle: 'So funktioniert es',
-        how: 'Wähle einen Stapel und lerne in Runden. Was du sicher weißt, kommt seltener wieder, was du nicht weißt, öfter: nach einem, drei, sieben und vierzehn Tagen. Ein Quiz prüft zwischendurch, wie sicher du bist.',
+        how: 'Wähle deine Zeichen oder einen Stapel und lerne in Runden. Was du sicher weißt, kommt seltener wieder, was du nicht weißt, öfter: nach einem, drei, sieben und vierzehn Tagen. Ein Quiz prüft zwischendurch, wie sicher du bist.',
         privacy: 'Dein Lernstand bleibt in deinem Browser. Es gibt kein Konto, und der Server speichert nichts. Als Datei kannst du ihn auf ein anderes Gerät mitnehmen.',
         level: {
             basic: 'Jugendfeuerwehr',
@@ -119,6 +119,7 @@ export default {
         showAll: 'Ausgeblendete hier zeigen',
         showKept: 'Nur die Auswahl zeigen',
         selection: 'Alle Zeichen der Auswahl auf einer Seite',
+        summary: 'Auswahl: {choice} (ändern)',
         selectionTitle: 'Meine Auswahl',
         selectionIntro: 'Alle Zeichen, die zu deinen Fachdiensten und deinem Ausbildungsstand passen, über alle Kapitel auf einer Seite.',
     },
@@ -177,6 +178,13 @@ export default {
     },
     signs: {
         source: '{number} {name}, Empfehlungen des BBK 2024, S. {page}',
+        deck: {
+            name: 'Taktische Zeichen: {choice}',
+            description: 'Wähle deine Fachdienste und deinen Ausbildungsstand. Gelernt werden die Zeichen, die dazu passen, und die für alle Organisationen: Bedeutung und Bild, je nach Ausbildungsstand auch Bausteine und Beispiele zum Ablesen.',
+            everything: 'alle Zeichen',
+            common: 'für alle Organisationen',
+            choice: '{services} · {stage}',
+        },
         sourceOwn: '{number} {name}, nach der Systematik der Empfehlungen des BBK 2024 zusammengesetzt, kein Beispiel daraus',
         prompt: {
             meaning: 'Was bedeutet dieses Zeichen?',
@@ -238,7 +246,7 @@ export default {
         title: 'Lernstand',
         intro: 'Wie weit du in jedem Stapel bist. Der Lernstand bleibt in diesem Browser auf diesem Gerät.',
         notStored: 'Dein Browser speichert gerade nichts; der Lernstand geht beim Schließen verloren.',
-        noDecks: 'Noch keine Kartenstapel.',
+        serviceStanding: 'davon nur {service}: {total} Karten · {fresh} neu · {due} fällig',
         standing: '{total} Karten · {fresh} neu · {due} fällig',
         boxes: 'Karten je Fach',
         box: 'Fach {box}: {count}',

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {usePage} from '@emberbox/ui'
 import {onMounted} from 'vue'
-import {SIGN_ITEMS, chapterItems} from '../areas/signs/catalog'
+import {chapterItems} from '../areas/signs/catalog'
 import {SIGN_CHAPTERS} from '../areas/signs/chapters'
 import {filterItems} from '../areas/signs/filter'
 import SignFilterBar from '../components/SignFilterBar.vue'
@@ -29,7 +29,7 @@ const count = (chapter: string) => filterItems(chapterItems(chapter), filter.val
       <h1 class="headline m-0 text-4xl">{{ t('reference.signsTitle') }}</h1>
       <p class="m-0 text-lg text-muted">{{ t('reference.signsIntro') }}</p>
     </header>
-    <SignFilterBar :filter="filter" :shown="filterItems(SIGN_ITEMS, filter).length" :total="SIGN_ITEMS.length" @choose="choose"/>
+    <SignFilterBar :filter="filter" @choose="choose"/>
     <div>
       <UButton to="/zeichen/auswahl" icon="i-lucide-filter" variant="outline" :label="t('filter.selection')"/>
     </div>

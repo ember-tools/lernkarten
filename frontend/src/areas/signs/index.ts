@@ -12,4 +12,4 @@ export const SIGNS_AREA: Area = {
     question: signsQuestion,
 }
 
-export {SIGN_DECKS} from './decks'
+export {FORMER_SIGN_DECKS, SIGN_DECK_ID, filterName, serviceDeck, signDeck} from './decks'

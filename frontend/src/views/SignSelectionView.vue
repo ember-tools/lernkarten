@@ -26,7 +26,7 @@ const chapters = computed(() => SIGN_CHAPTERS
       <h1 class="headline m-0 text-4xl">{{ t('filter.selectionTitle') }}</h1>
       <p class="m-0 text-lg text-muted">{{ t('filter.selectionIntro') }}</p>
     </header>
-    <SignFilterBar :filter="filter" :shown="kept.length" :total="SIGN_ITEMS.length" @choose="choose"/>
+    <SignFilterBar :filter="filter" @choose="choose"/>
     <section v-for="entry in chapters" :key="entry.chapter.slug" class="flex flex-col gap-3">
       <h2 class="headline m-0 text-2xl">
         <RouterLink :to="`/zeichen/${entry.chapter.slug}`">{{ entry.chapter.title }}</RouterLink>
