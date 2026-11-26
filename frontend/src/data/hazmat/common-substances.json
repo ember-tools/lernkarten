@@ -1,0 +1,26 @@
+{
+  "note": "Häufige Stoffe für die Lernkarten, mit Gefahrnummer und UN-Nummer aus der Liste der UN-Nummern (un.json). Vor der Veröffentlichung gegen ADR Tabelle A, Kapitel 3.2, Spalte 20 zu prüfen.",
+  "substances": [
+    {"un": "1203", "hazard": "33", "name": "Benzin, Ottokraftstoff", "level": "basic"},
+    {"un": "1202", "hazard": "30", "name": "Dieselkraftstoff, Heizöl leicht", "level": "basic"},
+    {"un": "1965", "hazard": "23", "name": "Flüssiggas (Propan-Butan-Gemisch)", "level": "basic"},
+    {"un": "1978", "hazard": "23", "name": "Propan", "level": "basic"},
+    {"un": "1005", "hazard": "268", "name": "Ammoniak, wasserfrei", "level": "basic"},
+    {"un": "1830", "hazard": "80", "name": "Schwefelsäure", "level": "basic"},
+    {"un": "3082", "hazard": "90", "name": "Umweltgefährdender Stoff, flüssig", "level": "basic"},
+    {"un": "1013", "hazard": "20", "name": "Kohlenstoffdioxid", "level": "basic"},
+    {"un": "1011", "hazard": "23", "name": "Butan", "level": "crew"},
+    {"un": "3077", "hazard": "90", "name": "Umweltgefährdender Stoff, fest", "level": "crew"},
+    {"un": "1230", "hazard": "336", "name": "Methanol", "level": "crew"},
+    {"un": "1090", "hazard": "33", "name": "Aceton", "level": "crew"},
+    {"un": "1223", "hazard": "30", "name": "Kerosin", "level": "crew"},
+    {"un": "1001", "hazard": "239", "name": "Acetylen (Ethin), gelöst", "level": "crew"},
+    {"un": "1049", "hazard": "23", "name": "Wasserstoff, verdichtet", "level": "crew"},
+    {"un": "1072", "hazard": "25", "name": "Sauerstoff, verdichtet", "level": "crew"},
+    {"un": "1073", "hazard": "225", "name": "Sauerstoff, tiefgekühlt, flüssig", "level": "crew"},
+    {"un": "1977", "hazard": "22", "name": "Stickstoff, tiefgekühlt, flüssig", "level": "crew"},
+    {"un": "1789", "hazard": "80", "name": "Salzsäure", "level": "crew"},
+    {"un": "1824", "hazard": "80", "name": "Natronlauge (Natriumhydroxidlösung)", "level": "crew"},
+    {"un": "2015", "hazard": "559", "name": "Wasserstoffperoxid, über 60 %", "level": "crew"}
+  ]
+}

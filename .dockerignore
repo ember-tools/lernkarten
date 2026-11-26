@@ -1,0 +1,14 @@
+.git
+.gitignore
+.direnv
+.envrc
+.idea
+.concept
+shell.nix
+node_modules
+frontend/node_modules
+frontend/dist
+backend/static
+__pycache__
+*.pyc
+.env

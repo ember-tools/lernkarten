@@ -1,0 +1,20 @@
+{
+  "entries": [
+    {
+      "key": "lernkarten.progress.v1",
+      "purpose": "Der Lernstand: für jede beantwortete Karte das Fach, wann sie wieder fällig ist, wie oft sie kam und ob die letzte Antwort stimmte.",
+      "kind": "LOCAL_STORAGE"
+    },
+    {
+      "key": "lernkarten.settings.v1",
+      "purpose": "Die Einstellungen: wie viele Fragen ein Quiz hat.",
+      "kind": "LOCAL_STORAGE"
+    },
+    {
+      "key": "vueuse-color-scheme",
+      "purpose": "Ob die Seite hell oder dunkel erscheint.",
+      "kind": "LOCAL_STORAGE",
+      "source": "@emberbox/ui"
+    }
+  ]
+}

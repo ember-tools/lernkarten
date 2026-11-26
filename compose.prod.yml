@@ -1,0 +1,22 @@
+services:
+  lernkarten:
+    image: "ghcr.io/ember-tools/lernkarten:latest"
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.docker.network: "${PROXY_NETWORK:-proxy}"
+      traefik.http.routers.lernkarten.rule: "Host(`${LERNKARTEN_HOST:?set LERNKARTEN_HOST to the public host name}`)"
+      traefik.http.routers.lernkarten.entrypoints: "${TRAEFIK_ENTRYPOINT:-websecure}"
+      traefik.http.routers.lernkarten.tls: true
+      traefik.http.routers.lernkarten.tls.certresolver: "${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      traefik.http.routers.lernkarten.observability.accessLogs: false
+      traefik.http.services.lernkarten.loadbalancer.server.port: 8000
+    environment:
+      CORS_ORIGINS: "https://${LERNKARTEN_HOST}"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: "${PROXY_NETWORK:-proxy}"
+    external: true
