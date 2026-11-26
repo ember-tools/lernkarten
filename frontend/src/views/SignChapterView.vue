@@ -10,7 +10,7 @@ import {t} from '../i18n'
 
 /** One chapter of the sign reference: every sign with its number, name and page. */
 const route = useRoute()
-const chapter = SIGN_CHAPTERS.find(entry => entry.slug === route.params.kapitel)
+const chapter = SIGN_CHAPTERS.find(entry => entry.slug === route.params.chapter)
 const items = computed(() => SIGN_ITEMS.filter(item => item.chapter === chapter?.chapter))
 
 usePage({

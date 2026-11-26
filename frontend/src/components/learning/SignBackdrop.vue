@@ -9,14 +9,5 @@ defineProps<{
 </script>
 
 <template>
-  <span class="sign-backdrop"><TacticalSymbol :symbol="drawing" :width="width ?? 120"/></span>
+  <span class="inline-flex rounded-md bg-white p-1.5"><TacticalSymbol :symbol="drawing" :width="width ?? 120"/></span>
 </template>
-
-<style scoped>
-.sign-backdrop {
-  display: inline-flex;
-  padding: 6px;
-  border-radius: 6px;
-  background: #ffffff;
-}
-</style>
