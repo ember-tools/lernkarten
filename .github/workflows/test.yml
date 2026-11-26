@@ -26,6 +26,10 @@ jobs:
         working-directory: backend/src
         run: python -m unittest discover -s web -t . -v
 
+      - name: Data import tests
+        working-directory: tools
+        run: python -m unittest discover -s . -v
+
   frontend:
     runs-on: ubuntu-latest
     steps:

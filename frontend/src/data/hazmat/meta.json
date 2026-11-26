@@ -1,0 +1,17 @@
+{
+  "source": "https://www.chemie.de/lexikon/Liste_der_UN-Nummern.html",
+  "origin": "https://de.wikipedia.org/wiki/Liste_der_UN-Nummern",
+  "authors": "https://de.wikipedia.org/w/index.php?title=Liste_der_UN-Nummern&action=history",
+  "licence": "GNU-Lizenz für freie Dokumentation",
+  "date": "2026-11-26",
+  "entries": 2273,
+  "classCorrections": {
+    "8.1 -> 8": 1,
+    "2.1 -> 2": 2
+  },
+  "missingClass": [
+    "2389",
+    "2586"
+  ],
+  "unreadHazard": {}
+}

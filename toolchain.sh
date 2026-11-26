@@ -50,6 +50,10 @@ Backend
   be-dev                uvicorn with --reload on port 8000 (PORT_BACKEND overrides)
   be-serve              fe-deploy, then serve everything
 
+Data
+  data-un [page.html]   Import the list of UN numbers from chemie.de into frontend/src/data/hazmat/
+  tools-test            Tests of the data import
+
 Docker
   docker-build [args]   Build the production image
   docker-app            Start it detached on port 8080
@@ -57,7 +61,7 @@ Docker
   docker-dev            Start the dev stack: backend with --reload, Vite on 5177
 
 Combined
-  verify                be-test, fe-lint, fe-test and fe-build, what CI runs
+  verify                be-test, tools-test, fe-lint, fe-test and fe-build, what CI runs
 USAGE
 }
 
@@ -93,6 +97,13 @@ case "$cmd" in
         be; run uvicorn main:app --port "$PORT_BACKEND" "$@"
         ;;
 
+    data-un)
+        page=()
+        [ $# -ge 1 ] && page=("$(realpath "$1")")
+        cd "$ROOT"; run python tools/import_un_numbers.py "${page[@]}"
+        ;;
+    tools-test)       cd "$ROOT/tools"; run python -m unittest discover -s . -v "$@" ;;
+
     docker-build)     cd "$ROOT"; docker build -t lernkarten:dev . "$@" ;;
     docker-app)       cd "$ROOT"; docker compose up -d --build "$@" ;;
     docker-app-down)  cd "$ROOT"; docker compose down "$@" ;;
@@ -100,6 +111,7 @@ case "$cmd" in
 
     verify)
         "$ROOT/toolchain.sh" be-test
+        "$ROOT/toolchain.sh" tools-test
         "$ROOT/toolchain.sh" fe-lint
         "$ROOT/toolchain.sh" fe-test
         "$ROOT/toolchain.sh" fe-build

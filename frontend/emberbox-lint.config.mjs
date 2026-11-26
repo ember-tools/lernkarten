@@ -11,6 +11,7 @@ export default {
         {path: 'frontend/emberbox-lint.config.mjs', extensions: null},
         {path: 'frontend/vite.config.ts', extensions: null},
         {path: 'backend/src', extensions: ['.py']},
+        {path: 'tools', extensions: ['.py']},
     ],
     text: [
         {path: 'frontend/src', extensions: ['.css']},

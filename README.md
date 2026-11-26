@@ -44,6 +44,20 @@ no volume.
 The container listens on port 8000. It serves the prerendered public pages for search engines and
 the single page app with `noindex` for everything else; `/api/health` answers the health check.
 
+## Data
+
+The dangerous goods data lives in `frontend/src/data/hazmat/`:
+
+- `hazard-numbers.json`: the hazard identification numbers of ADR 2025, 5.3.2.3.2, with their
+  meanings and the meaning of each digit (5.3.2.3.1), taken from the
+  [ADR 2025 excerpt of chapter 5.3](https://www.gefahrgutshop.de/fileadmin/pdfs/ADR_2025/Gefahrgutshop_ADR_2025_Kapitel_5-3_Grosszettel-Placards-an-Container-Tank-Fahrzeug-Warntafeln.pdf).
+- `un.json` and `meta.json`: the list of UN numbers, imported by `./toolchain.sh data-un` from
+  [chemie.de](https://www.chemie.de/lexikon/Liste_der_UN-Nummern.html), which carries the German
+  Wikipedia's [Liste der UN-Nummern](https://de.wikipedia.org/wiki/Liste_der_UN-Nummern) under the
+  GNU Free Documentation License; its authors are listed in the
+  [article history](https://de.wikipedia.org/w/index.php?title=Liste_der_UN-Nummern&action=history).
+- `common-substances.json`: a hand-kept list of common substances for the learning cards.
+
 ## Licence
 
 AGPL-3.0-or-later, see `LICENSE`.
