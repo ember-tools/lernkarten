@@ -1,7 +1,7 @@
 /**
  * How the sign area asks its cards: a sign for its meaning, a meaning for its sign, the size, the
  * organisation or the ability a sign shows, a sign to put together in the kit, a worked example of
- * the writing around a sign, and the changes against 2010.
+ * the writing around a sign, a question about the group of a fire service, and the changes against 2010.
  */
 
 import {ABILITIES, SIGN_ORGANISATIONS, SIGN_SIZES, catalogSignTree, tacticalSignTree, type AbilityName} from '@emberbox/ui'
@@ -10,11 +10,12 @@ import {choiceQuestion, distractorItems} from '../../learning/choices'
 import type {Card, Question} from '../../learning/model'
 import {SIGN_ITEMS, organisationName, signItem, sizeName, specOf, type SignItem} from './catalog'
 import {composable} from './compose'
+import {GROUP_ITEMS} from './group'
 import {NOTE_ITEMS} from './notes'
 import {READING_ITEMS} from './reading'
 
 /** The exercises of the sign area. */
-export type SignExercise = 'meaning' | 'picture' | 'size' | 'organisation' | 'ability' | 'compose' | 'reading' | 'note'
+export type SignExercise = 'meaning' | 'picture' | 'size' | 'organisation' | 'ability' | 'compose' | 'reading' | 'group' | 'note'
 
 /** Where a sign comes from, as the explanation of every answer names it. */
 function source(item: SignItem): string {
@@ -82,8 +83,8 @@ function signQuestion(item: SignItem, card: Card, random: () => number): Questio
 
 /** Asks a card of the sign area. */
 export function signsQuestion(card: Card, random: () => number): Question {
-    if (card.exercise === 'reading') {
-        const item = READING_ITEMS.find(entry => entry.id === card.itemId)!
+    if (card.exercise === 'reading' || card.exercise === 'group') {
+        const item = [...READING_ITEMS, ...GROUP_ITEMS].find(entry => entry.id === card.itemId)!
         return choiceQuestion({
             cardId: card.id, prompt: item.prompt, visual: tacticalSignTree(item.sign), correct: {text: item.answer},
             distractors: item.distractors.map(text => ({text})), explanation: item.explanation,
@@ -98,14 +99,14 @@ export function signsQuestion(card: Card, random: () => number): Question {
 
 /**
  * The exercises a catalogue sign can be asked in. Building blocks are asked only of the example
- * signs of annexes C and D, which name a real unit: the signs of chapters 2 to 5 show one block each,
+ * signs of annexes C and D and the group of a fire service, which name a real unit or function: the signs of chapters 2 to 5 show one block each,
  * so asking for it would repeat the meaning, and their fire service red is only a display choice.
  * The organisation is asked only in annex D, where it varies.
  */
 export function exercisesFor(item: SignItem): SignExercise[] {
     const spec = specOf(item)
     const exercises: SignExercise[] = ['meaning', 'picture']
-    const unit = item.chapter === 'C' || item.chapter === 'D'
+    const unit = item.chapter === 'C' || item.chapter === 'D' || item.chapter === 'G'
     if (!spec || !unit) return exercises
     if (spec.size) exercises.push('size')
     if (spec.organisation && item.chapter === 'D') exercises.push('organisation')

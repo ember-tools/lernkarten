@@ -69,6 +69,7 @@ const SECTION_RULES: Readonly<Record<string, SignTags>> = {
     'C': tags('crew', 'fire'),
     'D': tags('lead', 'command'),
     'G': tags('youth', 'fire'),
+    'group': tags('youth', 'fire'),
     'strength': tags('crew', 'command'),
     'time': tags('lead', 'command'),
     'identification': tags('lead', 'command'),

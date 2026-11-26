@@ -39,6 +39,7 @@ usePage({
         <RouterLink to="/zeichen" class="text-sm text-muted">{{ t('reference.back') }}</RouterLink>
         <h1 class="headline m-0 text-4xl">{{ chapter.title }}</h1>
         <p class="m-0 text-lg text-muted">{{ chapter.intro }}</p>
+        <RouterLink v-if="chapter.related" :to="`/zeichen/${chapter.related.slug}`">{{ chapter.related.label }}</RouterLink>
       </header>
       <SignFilterBar :filter="filter" :items="all" @choose="choose"/>
       <SignList :items="items"/>

@@ -3,12 +3,13 @@
  * it to know which pages to prerender.
  */
 
-/** A chapter of the reference: its address, title, which catalogue chapter it shows and how the chapter works. */
+/** A chapter of the reference: its address, title, which catalogue chapter it shows, how the chapter works and a chapter to read on. */
 export interface SignChapter {
     slug: string
     title: string
     chapter: string
     intro: string
+    related?: {slug: string, label: string}
 }
 
 /** The chapters in the order of the recommendations. */
@@ -30,5 +31,6 @@ export const SIGN_CHAPTERS: readonly SignChapter[] = [
     {slug: 'fuehrung', title: 'Führung (Anhang D)', chapter: 'D',
         intro: 'Führungsstellen, Plätze und Führungskräfte mit Verwaltungsstufe und Herkunft.'},
     {slug: 'gruppe', title: 'Die Gruppe der Feuerwehr', chapter: 'G',
-        intro: 'Gruppenführer, Maschinist, Melder und die Trupps. Die Empfehlungen führen sie nicht als eigene Zeichen; sie sind hier nach deren Systematik zusammengesetzt: Führungskräfte als Person mit Führungsbalken und Größenordnung, Trupps als taktische Formation mit Kurzbezeichnung.'},
+        intro: 'Gruppenführer, Maschinist, Melder und die Trupps. Die Empfehlungen führen sie nicht als eigene Zeichen; sie sind hier nach deren Systematik zusammengesetzt: Führungskräfte als Person mit Führungsbalken und Größenordnung, Trupps als taktische Formation mit Kurzbezeichnung.',
+        related: {slug: 'feuerwehr', label: 'Staffel, Gruppe und Zug als ganze Einheit stehen in Anhang C.'}},
 ]

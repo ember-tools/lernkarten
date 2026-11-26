@@ -8,6 +8,7 @@ import {card, type Card, type Deck, type Level} from '../../learning/model'
 import {SIGN_ITEMS, type SignItem} from './catalog'
 import {exercisesFor, type SignExercise} from './exercises'
 import {CHOSEN_SERVICES, EVERYTHING, filterItems, isEverything} from './filter'
+import {GROUP_ITEMS} from './group'
 import {NOTE_ITEMS} from './notes'
 import {READING_ITEMS} from './reading'
 import {tagsOf, type Service, type SignFilter, type Stage} from './tags'
@@ -41,7 +42,7 @@ function cardsOf(items: readonly SignItem[], exercises: readonly SignExercise[])
     return items.flatMap(item => exercisesFor(item).filter(exercise => exercises.includes(exercise)).map(exercise => card('signs', item.id, exercise)))
 }
 
-const ITEMS_BY_ID = new Map([...SIGN_ITEMS, ...READING_ITEMS, ...NOTE_ITEMS].map(item => [item.id, item]))
+const ITEMS_BY_ID = new Map([...SIGN_ITEMS, ...READING_ITEMS, ...GROUP_ITEMS, ...NOTE_ITEMS].map(item => [item.id, item]))
 
 /** The deck of one service at a stage, holding only what belongs to that service, not what every organisation shares. */
 export function serviceDeck(service: Service, stage: Stage): Deck {
@@ -60,7 +61,7 @@ export function filterName(filter: SignFilter): string {
     return t('signs.deck.choice', {services: services.length ? services.join(', ') : t('signs.deck.common'), stage: t(`filter.stageName.${filter.stage}`)})
 }
 
-/** The sign deck of a choice: the signs it keeps in the exercises of its stage, with the worked examples and notes it keeps. */
+/** The sign deck of a choice: the signs it keeps in the exercises of its stage, with the worked examples, group questions and notes it keeps. */
 export function signDeck(filter: SignFilter): Deck {
     return {
         id: SIGN_DECK_ID, area: 'signs', level: STAGE_LEVEL[filter.stage], everything: isEverything(filter),
@@ -69,6 +70,7 @@ export function signDeck(filter: SignFilter): Deck {
         cards: [
             ...cardsOf(filterItems(SIGN_ITEMS, filter), STAGE_EXERCISES[filter.stage]),
             ...filterItems(READING_ITEMS, filter).map(item => card('signs', item.id, 'reading')),
+            ...filterItems(GROUP_ITEMS, filter).map(item => card('signs', item.id, 'group')),
             ...filterItems(NOTE_ITEMS, filter).map(item => card('signs', item.id, 'note')),
         ],
     }

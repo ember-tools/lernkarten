@@ -8,6 +8,7 @@ import {composable, differences, kitOf} from './compose'
 import {COMMON_VEHICLES} from './tags'
 import {FORMER_SIGN_DECKS, filterName, serviceDeck, signDeck} from './decks'
 import {EVERYTHING} from './filter'
+import {GROUP_ITEMS} from './group'
 import {READING_ITEMS} from './reading'
 
 describe('sign area', () => {
@@ -36,13 +37,15 @@ describe('sign area', () => {
         expect(basics.level).toBe('basic')
         expect(basics.cards.some(card => card.itemId.startsWith('D.') || card.exercise === 'reading')).toBe(false)
         for (const id of ['1.11', 'G.1', 'G.7', 'note-hazard', ...COMMON_VEHICLES]) expect(basics.cards.some(card => card.itemId === id), id).toBe(true)
-        expect(basics.cards.some(card => card.exercise !== 'meaning' && card.exercise !== 'picture' && card.exercise !== 'note')).toBe(false)
+        expect(basics.cards.some(card => card.exercise !== 'meaning' && card.exercise !== 'picture' && card.exercise !== 'note' && card.exercise !== 'group')).toBe(false)
+        expect(basics.cards.some(card => card.itemId === 'group-squads')).toBe(true)
     })
 
-    it('asks building blocks only of the example signs of annexes C and D, the organisation only of leaders', () => {
+    it('asks building blocks only of the example signs of annexes C and D and the group, the organisation only of leaders', () => {
         const blocks = new Set(['size', 'organisation', 'ability', 'compose'])
         const everything = signDeck(EVERYTHING)
-        for (const card of everything.cards.filter(entry => blocks.has(entry.exercise))) expect(card.itemId, card.id).toMatch(/^[CD]\./)
+        for (const card of everything.cards.filter(entry => blocks.has(entry.exercise))) expect(card.itemId, card.id).toMatch(/^[CDG]\./)
+        for (const id of ['G.1', 'G.4', 'G.7']) expect(everything.cards.some(card => card.id === `signs:compose:${id}`), id).toBe(true)
         expect(everything.cards.some(card => card.exercise === 'organisation')).toBe(true)
         expect(signDeck({services: ['command'], stage: 'crew'}).cards.some(card => card.exercise === 'organisation')).toBe(false)
     })
@@ -90,7 +93,14 @@ describe('sign area', () => {
     })
 
     it('keeps the answer of every worked example out of its distractors', () => {
-        for (const item of READING_ITEMS) expect(item.distractors, item.id).not.toContain(item.answer)
+        for (const item of [...READING_ITEMS, ...GROUP_ITEMS]) expect(item.distractors, item.id).not.toContain(item.answer)
+    })
+
+    it('never writes the answer of a group question into its sign', () => {
+        for (const item of GROUP_ITEMS) {
+            const writing = item.sign.text
+            if (writing) expect(item.answer.toLowerCase(), item.id).not.toContain(writing.toLowerCase())
+        }
     })
 
     it('has a reference page for every chapter with signs', () => {
