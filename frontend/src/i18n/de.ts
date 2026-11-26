@@ -18,6 +18,7 @@ export default {
         learn: 'Lernen',
         quiz: 'Quiz',
         progress: 'Lernstand',
+        signSelection: 'Meine Auswahl – Taktische Zeichen',
         notFound: 'Seite nicht gefunden',
     },
     landing: {
@@ -87,12 +88,39 @@ export default {
     reference: {
         eyebrow: 'Nachschlagen',
         signsTitle: 'Taktische Zeichen',
-        signsIntro: 'Alle Zeichen der Empfehlungen des BBK von 2024, nach Kapiteln. Jedes Zeichen ist aus Bausteinen zusammengesetzt: Grundform, Farbe, Ergänzungszeichen, Fähigkeiten und Zusatzzeichen.',
+        signsIntro: 'Alle Zeichen der Empfehlungen des BBK von 2024 nach Kapiteln, dazu die Gruppe der Feuerwehr. Wähle deine Fachdienste und deinen Ausbildungsstand, dann siehst du nur, was für dich zählt. Jedes Zeichen ist aus Bausteinen zusammengesetzt: Grundform, Farbe, Ergänzungszeichen, Fähigkeiten und Zusatzzeichen.',
         count: '{count} Zeichen',
         back: '← Alle Kapitel',
         page: 'S. {page}',
+        own: 'nach der Systematik, kein Beispiel der Empfehlungen',
         source: 'Quelle: {source}',
         sourceLink: 'Auszug öffnen',
+    },
+    filter: {
+        label: 'Auswahl der Zeichen',
+        services: 'Fachdienste',
+        stage: 'Ausbildungsstand',
+        service: {
+            fire: 'Feuerwehr',
+            thw: 'THW',
+            medical: 'Sanität und Betreuung',
+            command: 'Führung und Stab',
+            other: 'Weitere',
+        },
+        stageName: {
+            youth: 'Jugendfeuerwehr',
+            crew: 'Einsatzabteilung',
+            lead: 'Führung',
+        },
+        count: '{shown} von {total} Zeichen.',
+        always: 'Zeichen, die für alle Organisationen gelten, sind immer dabei.',
+        hidden: '{count} Zeichen dieses Kapitels sind ausgeblendet.',
+        none: 'In diesem Kapitel passt kein Zeichen zur Auswahl.',
+        showAll: 'Ausgeblendete hier zeigen',
+        showKept: 'Nur die Auswahl zeigen',
+        selection: 'Alle Zeichen der Auswahl auf einer Seite',
+        selectionTitle: 'Meine Auswahl',
+        selectionIntro: 'Alle Zeichen, die zu deinen Fachdiensten und deinem Ausbildungsstand passen, über alle Kapitel auf einer Seite.',
     },
     operations: {
         title: 'Zum Lernen, nicht für den Einsatz',
@@ -149,6 +177,7 @@ export default {
     },
     signs: {
         source: '{number} {name}, Empfehlungen des BBK 2024, S. {page}',
+        sourceOwn: '{number} {name}, nach der Systematik der Empfehlungen des BBK 2024 zusammengesetzt, kein Beispiel daraus',
         prompt: {
             meaning: 'Was bedeutet dieses Zeichen?',
             picture: 'Welches Zeichen steht für „{name}“?',

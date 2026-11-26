@@ -29,4 +29,6 @@ export const SIGN_CHAPTERS: readonly SignChapter[] = [
         intro: 'Einheiten und Fahrzeuge der Feuerwehr, zusammengesetzt aus Grundform, Farbe, Größenordnung, Fähigkeit und Kurzbezeichnung.'},
     {slug: 'fuehrung', title: 'Führung (Anhang D)', chapter: 'D',
         intro: 'Führungsstellen, Plätze und Führungskräfte mit Verwaltungsstufe und Herkunft.'},
+    {slug: 'gruppe', title: 'Die Gruppe der Feuerwehr', chapter: 'G',
+        intro: 'Gruppenführer, Maschinist, Melder und die Trupps. Die Empfehlungen führen sie nicht als eigene Zeichen; sie sind hier nach deren Systematik zusammengesetzt: Führungskräfte als Person mit Führungsbalken und Größenordnung, Trupps als taktische Formation mit Kurzbezeichnung.'},
 ]

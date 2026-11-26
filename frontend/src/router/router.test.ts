@@ -13,6 +13,12 @@ describe('routes', () => {
         expect(new Set([...prerendered].map(route => route.name))).toEqual(new Set(publicNames))
     })
 
+    it('keeps the selection of signs apart from the chapters', () => {
+        expect(router.resolve('/zeichen/auswahl').name).toBe('SignSelection')
+        expect(router.resolve('/zeichen/gruppe').name).toBe('SignChapter')
+        expect(PUBLIC_PATHS).toContain('/zeichen/gruppe')
+    })
+
     it('gives every app route a title', () => {
         for (const route of routes.filter(route => route.meta?.public !== true)) expect(route.meta?.titleKey, route.path).toBeTruthy()
     })

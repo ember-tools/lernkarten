@@ -18,6 +18,7 @@ export type SignExercise = 'meaning' | 'picture' | 'size' | 'organisation' | 'ab
 
 /** Where a sign comes from, as the explanation of every answer names it. */
 function source(item: SignItem): string {
+    if (!item.entry.recommended) return t('signs.sourceOwn', {number: item.entry.number, name: item.name})
     return t('signs.source', {number: item.entry.number, name: item.name, page: item.entry.page ?? ''})
 }
 

@@ -11,6 +11,11 @@
       "kind": "LOCAL_STORAGE"
     },
     {
+      "key": "lernkarten.sign-filter.v1",
+      "purpose": "Die Auswahl bei den taktischen Zeichen: welche Fachdienste und welcher Ausbildungsstand gezeigt und gelernt werden.",
+      "kind": "LOCAL_STORAGE"
+    },
+    {
       "key": "vueuse-color-scheme",
       "purpose": "Ob die Seite hell oder dunkel erscheint.",
       "kind": "LOCAL_STORAGE",

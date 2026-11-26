@@ -1,18 +1,25 @@
 <script setup lang="ts">
-import {CATALOG_SOURCE, usePage} from '@emberbox/ui'
-import {SIGN_ITEMS} from '../areas/signs/catalog'
+import {usePage} from '@emberbox/ui'
+import {onMounted} from 'vue'
+import {SIGN_ITEMS, chapterItems} from '../areas/signs/catalog'
 import {SIGN_CHAPTERS} from '../areas/signs/chapters'
-import NoteText from '../components/NoteText.vue'
+import {filterItems} from '../areas/signs/filter'
+import SignFilterBar from '../components/SignFilterBar.vue'
+import SignSourceNote from '../components/SignSourceNote.vue'
+import {useSignFilter} from '../composables/useSignFilter'
 import {t} from '../i18n'
 
 usePage({
   title: 'Taktische Zeichen – Lernkarten',
-  description: 'Alle taktischen Zeichen nach den Empfehlungen des BBK 2024 nach Kapiteln: Grundelemente, Farben, Ergänzungszeichen, Fähigkeiten, Zusatzzeichen und Beispiele für Feuerwehr und Führung.',
+  description: 'Alle taktischen Zeichen nach den Empfehlungen des BBK 2024 nach Kapiteln, gefiltert nach Fachdienst und Ausbildungsstand: Grundelemente, Farben, Ergänzungszeichen, Fähigkeiten, Zusatzzeichen, Beispiele für Feuerwehr und Führung und die Gruppe der Feuerwehr.',
   path: '/zeichen',
 })
 
-/** How many signs a chapter has. */
-const count = (chapter: string) => SIGN_ITEMS.filter(item => item.chapter === chapter).length
+const {filter, load, choose} = useSignFilter()
+onMounted(load)
+
+/** How many signs of a chapter the learner's choice keeps. */
+const count = (chapter: string) => filterItems(chapterItems(chapter), filter.value).length
 </script>
 
 <template>
@@ -22,6 +29,10 @@ const count = (chapter: string) => SIGN_ITEMS.filter(item => item.chapter === ch
       <h1 class="headline m-0 text-4xl">{{ t('reference.signsTitle') }}</h1>
       <p class="m-0 text-lg text-muted">{{ t('reference.signsIntro') }}</p>
     </header>
+    <SignFilterBar :filter="filter" :shown="filterItems(SIGN_ITEMS, filter).length" :total="SIGN_ITEMS.length" @choose="choose"/>
+    <div>
+      <UButton to="/zeichen/auswahl" icon="i-lucide-filter" variant="outline" :label="t('filter.selection')"/>
+    </div>
     <div class="grid gap-4 md:grid-cols-2">
       <UCard v-for="chapter in SIGN_CHAPTERS" :key="chapter.slug">
         <div class="flex flex-col gap-2">
@@ -33,6 +44,6 @@ const count = (chapter: string) => SIGN_ITEMS.filter(item => item.chapter === ch
         </div>
       </UCard>
     </div>
-    <NoteText>{{ t('reference.source', {source: CATALOG_SOURCE}) }} <RouterLink to="/quellen">{{ t('nav.sources') }}</RouterLink></NoteText>
+    <SignSourceNote/>
   </div>
 </template>

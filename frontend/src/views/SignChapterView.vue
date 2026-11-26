@@ -1,17 +1,28 @@
 <script setup lang="ts">
-import {CATALOG_SOURCE, catalogSignTree, usePage} from '@emberbox/ui'
-import {computed} from 'vue'
+import {usePage} from '@emberbox/ui'
+import {computed, onMounted, ref} from 'vue'
 import {useRoute} from 'vue-router'
-import {SIGN_ITEMS} from '../areas/signs/catalog'
+import {chapterItems} from '../areas/signs/catalog'
 import {SIGN_CHAPTERS} from '../areas/signs/chapters'
-import NoteText from '../components/NoteText.vue'
-import SignBackdrop from '../components/learning/SignBackdrop.vue'
+import {filterItems} from '../areas/signs/filter'
+import SignFilterBar from '../components/SignFilterBar.vue'
+import SignList from '../components/SignList.vue'
+import SignSourceNote from '../components/SignSourceNote.vue'
+import {useSignFilter} from '../composables/useSignFilter'
 import {t} from '../i18n'
 
-/** One chapter of the sign reference: every sign with its number, name and page. */
+/**
+ * One chapter of the sign reference: the signs the learner's choice keeps, with their number, name
+ * and page. Showing the hidden ones as well is a look at this page only and leaves the choice alone.
+ */
 const route = useRoute()
 const chapter = SIGN_CHAPTERS.find(entry => entry.slug === route.params.chapter)
-const items = computed(() => SIGN_ITEMS.filter(item => item.chapter === chapter?.chapter))
+const all = chapter ? chapterItems(chapter.chapter) : []
+const {filter, load, choose} = useSignFilter()
+const showAll = ref(false)
+const kept = computed(() => filterItems(all, filter.value))
+const items = computed(() => showAll.value ? all : kept.value)
+onMounted(load)
 
 usePage({
   title: `${chapter?.title ?? t('routes.notFound')} – Taktische Zeichen – Lernkarten`,
@@ -29,17 +40,14 @@ usePage({
         <h1 class="headline m-0 text-4xl">{{ chapter.title }}</h1>
         <p class="m-0 text-lg text-muted">{{ chapter.intro }}</p>
       </header>
-      <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
-        <li v-for="item in items" :key="item.id" class="flex items-center gap-3 rounded-(--ui-radius) border border-default p-3">
-          <SignBackdrop :drawing="catalogSignTree(item.entry)" :width="96"/>
-          <span class="flex min-w-0 flex-col">
-            <span class="font-mono text-sm">{{ item.entry.number }}</span>
-            <span class="text-sm">{{ item.name }}</span>
-            <span class="text-xs text-muted">{{ t('reference.page', {page: item.entry.page ?? ''}) }}</span>
-          </span>
-        </li>
-      </ul>
-      <NoteText>{{ t('reference.source', {source: CATALOG_SOURCE}) }} <RouterLink to="/quellen">{{ t('nav.sources') }}</RouterLink></NoteText>
+      <SignFilterBar :filter="filter" :shown="kept.length" :total="all.length" @choose="choose"/>
+      <SignList :items="items"/>
+      <div v-if="kept.length < all.length" class="flex flex-wrap items-center gap-3">
+        <span v-if="!showAll" class="text-sm text-muted">{{ kept.length ? t('filter.hidden', {count: all.length - kept.length}) : t('filter.none') }}</span>
+        <UButton size="sm" color="neutral" variant="outline" :label="showAll ? t('filter.showKept') : t('filter.showAll')"
+                 @click="showAll = !showAll"/>
+      </div>
+      <SignSourceNote/>
     </template>
     <UAlert v-else color="warning" variant="soft" :title="t('notFound.title')"/>
   </div>

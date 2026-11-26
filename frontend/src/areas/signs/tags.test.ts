@@ -35,6 +35,7 @@ const EXPECTED: readonly [string, string, string][] = [
     ['D.1.1', 'command', 'lead'], ['D.1.8', 'command fire', 'lead'], ['D.1.9', 'command medical', 'lead'],
     ['D.3.3', 'command medical', 'lead'], ['D.3.14', 'command thw', 'lead'], ['D.4.2', 'command fire', 'lead'],
     ['D.4.4', 'command', 'lead'],
+    ['G.1', 'fire', 'youth'], ['G.10', 'fire', 'youth'],
     ['strength-total', 'command', 'crew'], ['time-june', 'command', 'lead'], ['identification-group', 'command', 'lead'],
     ['note-hazard', 'all', 'youth'], ['note-military', 'all', 'crew'], ['note-strength', 'all command', 'crew'],
 ]
